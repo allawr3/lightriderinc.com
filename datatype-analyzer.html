@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Analyze data entropy to detect text vs binary data using Shannon entropy analysis." />
+  <title>Data Type Analyzer | Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFFF00;
+      --red: #fc2848;
+      --maroon: #a52848;
+      --black: #000;
+      --dark-gray: #111;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--black);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .binary-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><text x="0" y="15" fill="rgba(255,255,255,0.1)" font-size="15px">0101010101...</text></svg>');
+      opacity: 0.4;
+    }
+    header {
+      z-index: 2;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--black);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left a img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--yellow);
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    .container {
+      z-index: 2;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: linear-gradient(145deg, var(--dark-gray), #0a0a0a);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid #333;
+      flex: 1;
+    }
+    .instructions {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid #333;
+    }
+    .instructions h2 {
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .instruction-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border: 1px solid #444;
+    }
+    .instruction-card h3 {
+      color: var(--red);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    .instruction-card p, .instruction-card li {
+      color: #ccc;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+    .instruction-card ol, .instruction-card ul {
+      padding-left: 1.2rem;
+    }
+    .instruction-card code {
+      background: rgba(255, 255, 0, 0.1);
+      color: var(--yellow);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    .quick-test {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border: 1px solid #444;
+    }
+    .quick-test h3 {
+      color: var(--maroon);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .test-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .test-example {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--yellow);
+    }
+    .test-example strong {
+      color: white;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .test-example code {
+      display: block;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--yellow);
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin: 0.5rem 0;
+      word-break: break-all;
+    }
+    .test-example p {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: 2.5em;
+      font-weight: 700;
+    }
+    .subtitle {
+      text-align: center;
+      color: var(--red);
+      margin-bottom: 2rem;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    .input-section {
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1em;
+    }
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 15px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+      background: #1a1a1a;
+      color: white;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.1);
+    }
+    textarea::placeholder {
+      color: #666;
+    }
+    .conversion-options {
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .conversion-options label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+    .conversion-options input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+    .file-input:hover {
+      border-color: var(--yellow);
+      background: rgba(255, 255, 0, 0.05);
+    }
+    .file-input input[type="file"] {
+      margin: 10px 0;
+      color: white;
+    }
+    .analyze-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--yellow), var(--red));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 20px;
+    }
+    .analyze-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(255, 255, 0, 0.3);
+    }
+    .analyze-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .results {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+      border: 1px solid #333;
+    }
+    .results.text {
+      background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(39, 174, 96, 0.1));
+      border-color: var(--yellow);
+    }
+    .results.binary {
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(231, 76, 60, 0.1));
+      border-color: var(--red);
+    }
+    .result-header {
+      font-size: 1.5em;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+    }
+    .icon {
+      font-size: 1.2em;
+    }
+    .entropy-value {
+      font-size: 2em;
+      font-weight: 700;
+      margin: 10px 0;
+      color: var(--yellow);
+    }
+    .details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .detail-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #ccc;
+      margin-bottom: 5px;
+      font-size: 0.9em;
+    }
+    .detail-value {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: white;
+    }
+    .char-distribution {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .char-distribution h4 {
+      color: white;
+      margin-bottom: 15px;
+    }
+    .char-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+    .char-label {
+      width: 50px;
+      text-align: right;
+      margin-right: 10px;
+      color: #ccc;
+    }
+    .bar {
+      height: 15px;
+      background: linear-gradient(90deg, var(--yellow), var(--red));
+      border-radius: 3px;
+      margin-right: 10px;
+      min-width: 2px;
+    }
+    .bar-count {
+      color: #ccc;
+      font-size: 11px;
+    }
+    footer {
+      z-index: 2;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      background-color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-image {
+      max-height: 40px;
+      opacity: 0.8;
+    }
+    .footer-note {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.9em;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      h1 { font-size: 2rem; }
+      .details {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-bg"></div>
+  <header>
+    <div class="header-left">
+      <a href="index.html">
+        <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Data Type Analyzer</h1>
+    <p class="subtitle">SHANNON ENTROPY ANALYSIS • TEXT VS BINARY DETECTION • QUANTUM RANDOMNESS</p>
+    
+    <div class="input-section">
+      <label for="dataInput">Enter your data:</label>
+      <textarea id="dataInput" placeholder="Paste your text or data here..."></textarea>
+      
+      <div class="conversion-options">
+        <label>
+          <input type="checkbox" id="convertBinary"> Convert binary string (0s and 1s) to raw bytes
+        </label>
+        <label>
+          <input type="checkbox" id="convertHex"> Convert hex string to raw bytes
+        </label>
+      </div>
+      
+      <div class="file-input">
+        <label for="fileInput">Or upload a file:</label>
+        <input type="file" id="fileInput" accept="*/*">
+      </div>
+    </div>
+    
+    <button class="analyze-btn" onclick="analyzeData()">Analyze Data</button>
+    
+    <div id="results" class="results">
+      <div class="result-header">
+        <span class="icon"></span>
+        <span id="resultType"></span>
+      </div>
+      <div>Shannon Entropy: <span id="entropyValue" class="entropy-value"></span></div>
+      <p id="resultDescription"></p>
+      
+      <div class="details">
+        <div class="detail-item">
+          <div class="detail-label">Data Size</div>
+          <div id="dataSize" class="detail-value">-</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Unique Bytes</div>
+          <div id="uniqueBytes" class="detail-value">-</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Most Common Byte</div>
+          <div id="mostCommon" class="detail-value">-</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Printable Characters</div>
+          <div id="printablePercent" class="detail-value">-</div>
+        </div>
+      </div>
+      
+      <div class="char-distribution">
+        <h4>Top Byte Frequencies:</h4>
+        <div id="distributionChart"></div>
+      </div>
+    </div>
+    
+    <div class="footer-note">
+      <p>Based on Shannon entropy analysis - Threshold: 6.0 bits per byte</p>
+    </div>
+
+    <!-- Instructions Section -->
+    <div class="instructions">
+      <h2>📋 How to Use This Tool</h2>
+      
+      <div class="instruction-grid">
+        <div class="instruction-card">
+          <h3>🚀 Getting Started</h3>
+          <p><strong>Method 1: Text Input</strong></p>
+          <ol>
+            <li>Paste your data into the text box</li>
+            <li>Choose conversion options if needed</li>
+            <li>Click "Analyze Data"</li>
+          </ol>
+          <p><strong>Method 2: File Upload</strong></p>
+          <ol>
+            <li>Click "Choose File"</li>
+            <li>Select any file type</li>
+            <li>Click "Analyze Data"</li>
+          </ol>
+        </div>
+        
+        <div class="instruction-card">
+          <h3>🔧 Conversion Options</h3>
+          <p><strong>Binary String:</strong> For data like <code>001101110011...</code></p>
+          <p>✅ Check "Convert binary string to raw bytes"</p>
+          
+          <p><strong>Hex String:</strong> For data like <code>A7B3C8D2...</code></p>
+          <p>✅ Check "Convert hex string to raw bytes"</p>
+          
+          <p><strong>Regular Text:</strong> Leave both boxes unchecked</p>
+        </div>
+        
+        <div class="instruction-card">
+          <h3>📈 Understanding Results</h3>
+          <p><strong>📝 TEXT Data:</strong> Entropy &lt; 6.0 bits/byte</p>
+          <p>Structured, predictable patterns</p>
+          
+          <p><strong>🔢 BINARY Data:</strong> Entropy ≥ 6.0 bits/byte</p>
+          <p>Random, compressed, or encrypted data</p>
+          
+          <p><strong>Good Quantum Data Should Show:</strong></p>
+          <ul>
+            <li>Entropy: 7.5-8.0 bits/byte</li>
+            <li>Unique bytes: 200+ different values</li>
+            <li>Even distribution across all byte values</li>
+          </ul>
+        </div>
+        
+        <div class="instruction-card">
+          <h3>📊 Data Size Requirements</h3>
+          <p><strong>Minimum for BINARY Classification (&gt;6.0 entropy):</strong></p>
+          <ul>
+            <li>Binary string: ~400-500 bits (50-63 bytes)</li>
+            <li>Hex string: ~100-126 hex characters (50-63 bytes)</li>
+          </ul>
+          
+          <p><strong>Good Quantum Randomness (7.0+ entropy):</strong></p>
+          <ul>
+            <li>Binary string: ~1,600-2,400 bits (200-300 bytes)</li>
+            <li>Hex string: ~400-600 hex characters (200-300 bytes)</li>
+          </ul>
+          
+          <p><strong>Excellent Quantum Randomness (7.5-8.0 entropy):</strong></p>
+          <ul>
+            <li>Binary string: ~4,000+ bits (500+ bytes)</li>
+            <li>Hex string: ~1,000+ hex characters (500+ bytes)</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="quick-test">
+        <h3>🎯 Quick Test Examples</h3>
+        <div class="test-examples">
+          <div class="test-example">
+            <strong>Test Binary String:</strong>
+            <code>00110111001101010110000100110110</code>
+            <p>✅ Check "Convert binary string" → Should show BINARY classification</p>
+          </div>
+          <div class="test-example">
+            <strong>Test Text:</strong>
+            <code>Hello, this is a test message!</code>
+            <p>⭕ Leave boxes unchecked → Should show TEXT classification</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image">
+    &copy; 2025 Light Rider Inc. All rights reserved.
+  </footer>
+
+  <script>
+    function calculateShannonEntropy(data) {
+      if (data.length === 0) return 0;
+      
+      // Count frequency of each byte value
+      const frequency = new Array(256).fill(0);
+      for (let i = 0; i < data.length; i++) {
+        frequency[data[i]]++;
+      }
+      
+      // Calculate Shannon entropy
+      let entropy = 0;
+      for (let i = 0; i < 256; i++) {
+        if (frequency[i] > 0) {
+          const p = frequency[i] / data.length;
+          entropy -= p * Math.log2(p);
+        }
+      }
+      
+      return entropy;
+    }
+    
+    function getByteStatistics(data) {
+      const frequency = new Array(256).fill(0);
+      let printableCount = 0;
+      
+      for (let i = 0; i < data.length; i++) {
+        frequency[data[i]]++;
+        // ASCII printable range (32-126) plus common whitespace
+        if ((data[i] >= 32 && data[i] <= 126) || data[i] === 9 || data[i] === 10 || data[i] === 13) {
+          printableCount++;
+        }
+      }
+      
+      // Find most common byte
+      let maxCount = 0;
+      let mostCommonByte = 0;
+      let uniqueBytes = 0;
+      
+      for (let i = 0; i < 256; i++) {
+        if (frequency[i] > 0) {
+          uniqueBytes++;
+          if (frequency[i] > maxCount) {
+            maxCount = frequency[i];
+            mostCommonByte = i;
+          }
+        }
+      }
+      
+      // Get top frequencies for visualization
+      const freqPairs = [];
+      for (let i = 0; i < 256; i++) {
+        if (frequency[i] > 0) {
+          freqPairs.push({byte: i, count: frequency[i]});
+        }
+      }
+      freqPairs.sort((a, b) => b.count - a.count);
+      
+      return {
+        uniqueBytes,
+        mostCommonByte,
+        printablePercent: (printableCount / data.length * 100).toFixed(1),
+        topFrequencies: freqPairs.slice(0, 10)
+      };
+    }
+    
+    function formatByte(byte) {
+      if (byte >= 32 && byte <= 126) {
+        return `'${String.fromCharCode(byte)}'`;
+      }
+      return `0x${byte.toString(16).toUpperCase().padStart(2, '0')}`;
+    }
+    
+    function convertBinaryStringToBytes(binaryString) {
+      // Remove any whitespace and validate
+      const cleanBinary = binaryString.replace(/\s+/g, '');
+      if (!/^[01]+$/.test(cleanBinary)) {
+        throw new Error('Invalid binary string. Only 0s and 1s allowed.');
+      }
+      
+      // Pad to multiple of 8 if needed
+      const paddedBinary = cleanBinary.padEnd(Math.ceil(cleanBinary.length / 8) * 8, '0');
+      
+      // Convert to bytes
+      const bytes = [];
+      for (let i = 0; i < paddedBinary.length; i += 8) {
+        const byte = paddedBinary.substr(i, 8);
+        bytes.push(parseInt(byte, 2));
+      }
+      
+      return new Uint8Array(bytes);
+    }
+    
+    function convertHexStringToBytes(hexString) {
+      // Remove whitespace and validate
+      const cleanHex = hexString.replace(/\s+/g, '').replace(/^0x/i, '');
+      if (!/^[0-9a-fA-F]+$/.test(cleanHex)) {
+        throw new Error('Invalid hex string. Only 0-9 and A-F allowed.');
+      }
+      
+      // Pad to even length if needed
+      const paddedHex = cleanHex.length % 2 ? '0' + cleanHex : cleanHex;
+      
+      // Convert to bytes
+      const bytes = [];
+      for (let i = 0; i < paddedHex.length; i += 2) {
+        bytes.push(parseInt(paddedHex.substr(i, 2), 16));
+      }
+      
+      return new Uint8Array(bytes);
+    }
+    
+    function analyzeData() {
+      const textarea = document.getElementById('dataInput');
+      const fileInput = document.getElementById('fileInput');
+      const convertBinary = document.getElementById('convertBinary').checked;
+      const convertHex = document.getElementById('convertHex').checked;
+      
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const arrayBuffer = e.target.result;
+          const data = new Uint8Array(arrayBuffer);
+          performAnalysis(data, `File: ${file.name}`);
+        };
+        reader.readAsArrayBuffer(file);
+      } else if (textarea.value.trim()) {
+        const text = textarea.value.trim();
+        
+        try {
+          let data;
+          let analysisType = 'Text input';
+          
+          if (convertBinary && convertHex) {
+            alert('Please select only one conversion option.');
+            return;
+          } else if (convertBinary) {
+            data = convertBinaryStringToBytes(text);
+            analysisType = 'Binary string converted to raw bytes';
+          } else if (convertHex) {
+            data = convertHexStringToBytes(text);
+            analysisType = 'Hex string converted to raw bytes';
+          } else {
+            data = new TextEncoder().encode(text);
+            analysisType = 'Text input (as UTF-8 bytes)';
+          }
+          
+          performAnalysis(data, analysisType);
+        } catch (error) {
+          alert(`Conversion error: ${error.message}`);
+          return;
+        }
+      } else {
+        alert('Please enter some data or select a file to analyze.');
+        return;
+      }
+    }
+    
+    function performAnalysis(data, dataSource = 'Unknown') {
+      const entropy = calculateShannonEntropy(data);
+      const stats = getByteStatistics(data);
+      const isText = entropy < 6.0;
+      
+      const resultsDiv = document.getElementById('results');
+      const resultType = document.getElementById('resultType');
+      const entropyValue = document.getElementById('entropyValue');
+      const resultDescription = document.getElementById('resultDescription');
+      
+      // Update results
+      entropyValue.textContent = entropy.toFixed(3);
+      document.getElementById('dataSize').textContent = data.length + ' bytes';
+      document.getElementById('uniqueBytes').textContent = stats.uniqueBytes;
+      document.getElementById('mostCommon').textContent = formatByte(stats.mostCommonByte);
+      document.getElementById('printablePercent').textContent = stats.printablePercent + '%';
+      
+      // Update visualization
+      const chartDiv = document.getElementById('distributionChart');
+      chartDiv.innerHTML = '';
+      const maxCount = stats.topFrequencies[0]?.count || 1;
+      
+      stats.topFrequencies.forEach(item => {
+        const barDiv = document.createElement('div');
+        barDiv.className = 'char-bar';
+        
+        const label = document.createElement('div');
+        label.className = 'char-label';
+        label.textContent = formatByte(item.byte);
+        
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.width = Math.max(2, (item.count / maxCount * 200)) + 'px';
+        
+        const count = document.createElement('span');
+        count.className = 'bar-count';
+        count.textContent = item.count;
+        
+        barDiv.appendChild(label);
+        barDiv.appendChild(bar);
+        barDiv.appendChild(count);
+        chartDiv.appendChild(barDiv);
+      });
+      
+      if (isText) {
+        resultsDiv.className = 'results text';
+        resultType.innerHTML = '<span class="icon">📝</span>Likely TEXT Data';
+        resultDescription.textContent = `Entropy is ${entropy.toFixed(3)} < 6.0, indicating structured, likely textual data with predictable patterns.`;
+      } else {
+        resultsDiv.className = 'results binary';
+        resultType.innerHTML = '<span class="icon">🔢</span>Likely BINARY Data';
+        resultDescription.textContent = `Entropy is ${entropy.toFixed(3)} ≥ 6.0, indicating random, compressed, or binary data with high information density.`;
+      }
+      
+      // Add data source information
+      const sourceInfo = document.createElement('p');
+      sourceInfo.style.fontSize = '0.9em';
+      sourceInfo.style.color = '#999';
+      sourceInfo.style.marginTop = '10px';
+      sourceInfo.textContent = `Data source: ${dataSource}`;
+      resultDescription.parentNode.insertBefore(sourceInfo, resultDescription.nextSibling);
+      
+      resultsDiv.style.display = 'block';
+    }
+    
+    // Handle file input
+    document.getElementById('fileInput').addEventListener('change', function() {
+      const textarea = document.getElementById('dataInput');
+      if (this.files.length > 0) {
+        textarea.value = '';
+        textarea.placeholder = `File selected: ${this.files[0].name}`;
+      }
+    });
+    
+    // Handle textarea input
+    document.getElementById('dataInput').addEventListener('input', function() {
+      const fileInput = document.getElementById('fileInput');
+      if (this.value.trim()) {
+        fileInput.value = '';
+        this.placeholder = 'Paste your text or data here...';
+      }
+    });
+  </script>
+</body>
+</html>
