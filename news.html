@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Latest news and media coverage of Light Rider's quantum technology innovations." />
+  <title>News | Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFFF00;
+      --red: #fc2848;
+      --maroon: #a52848;
+      --black: #000;
+      --dark-gray: #111;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--black);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .binary-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><text x="0" y="15" fill="rgba(255,255,255,0.1)" font-size="15px">0101010101...</text></svg>');
+      opacity: 0.4;
+    }
+    header {
+      z-index: 2;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--black);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left a img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--yellow);
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    main {
+      z-index: 2;
+      flex: 1;
+      padding: 3rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--red);
+      margin-bottom: 3rem;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .news-block {
+      background: linear-gradient(145deg, var(--dark-gray), #0a0a0a);
+      padding: 0;
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .news-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--yellow), var(--red), var(--maroon));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .news-block:hover::before {
+      opacity: 1;
+    }
+    .news-block:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(255, 255, 0, 0.1);
+      border-color: var(--yellow);
+    }
+    .news-content {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .news-block:nth-child(3n+1):hover {
+      box-shadow: 0 20px 40px rgba(255, 255, 0, 0.15);
+    }
+    .news-block:nth-child(3n+2):hover {
+      box-shadow: 0 20px 40px rgba(252, 40, 72, 0.15);
+    }
+    .news-block:nth-child(3n):hover {
+      box-shadow: 0 20px 40px rgba(165, 40, 72, 0.15);
+    }
+    
+    .news-block a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .news-block a::after {
+      content: '→';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) translateX(20px);
+      opacity: 0;
+      color: var(--yellow);
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .news-block:hover a::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    .news-block a:hover {
+      color: var(--yellow);
+    }
+    .news-block h3 {
+      margin: 0 0 1rem 0;
+      color: white;
+      font-size: 1.2rem;
+      line-height: 1.4;
+      flex-grow: 1;
+      padding-right: 2rem;
+      transition: color 0.3s ease;
+    }
+    .news-block a:hover h3 {
+      color: var(--yellow);
+    }
+    .news-source {
+      color: var(--red);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: rgba(252, 40, 72, 0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      display: inline-block;
+      border: 1px solid rgba(252, 40, 72, 0.3);
+    }
+    .news-date {
+      color: #666;
+      font-size: 0.85rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      font-weight: 500;
+      text-align: right;
+    }
+    .featured-news {
+      background: linear-gradient(135deg, var(--dark-gray), #222);
+      padding: 3rem;
+      border-radius: 12px;
+      border-top: 4px solid var(--yellow);
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .featured-news h2 {
+      color: var(--yellow);
+      margin-bottom: 1rem;
+    }
+    .featured-news p {
+      color: #ccc;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    footer {
+      z-index: 2;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      background-color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-image {
+      max-height: 40px;
+      opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      h1 { font-size: 2rem; }
+      .news-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .news-block {
+        padding: 1.5rem;
+      }
+      .featured-news {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-bg"></div>
+  <header>
+    <div class="header-left">
+      <a href="index.html">
+        <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>In The News</h1>
+    <p class="subtitle">MEDIA COVERAGE • INDUSTRY INSIGHTS • QUANTUM INNOVATION</p>
+
+    <div class="featured-news">
+      <h2>Light Rider in the Media</h2>
+      <p>Stay up to date with the latest coverage of Light Rider's quantum technology innovations, industry partnerships, and thought leadership in quantum computing, cybersecurity, and optical communications.</p>
+    </div>
+
+    <div class="news-grid">
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.ledinside.com/products/2025/02/light_rider_lifi">
+            <h3>Light Rider Introduces Quantum LiFi Technology to Improve Network Security</h3>
+          </a>
+          <div class="news-source">LEDinside</div>
+          <div class="news-date">February 2025</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.lifitn2.com/bloglifi/quantumevent">
+            <h3>Light Rider's Novel Approach to Quantum Random Number Generation with LiFi</h3>
+          </a>
+          <div class="news-source">LiFi Tech News</div>
+          <div class="news-date">December 31, 2024</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.youtube.com/watch?v=ywYNXL2Ke-8&t=4s">
+            <h3>Former NSA Contractor talks Quantum Computing</h3>
+          </a>
+          <div class="news-source">RealTime Cyber</div>
+          <div class="news-date">January 3, 2024</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://getagriponlighting.com/episode-334-start-with-the-entropy-tony-lawrence-light-rider">
+            <h3>Start with The Entropy</h3>
+          </a>
+          <div class="news-source">Get a Grip on Lighting</div>
+          <div class="news-date">November 27, 2023</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://iqtevent.com/newyork/">
+            <h3>Why Entropy is more valuable than BITCOIN</h3>
+          </a>
+          <div class="news-source">IQT NYC</div>
+          <div class="news-date">October 24, 2023</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.digitaltrends.com/computing/what-is-li-fi/">
+            <h3>What is Li-Fi? A faster, more secure wireless internet is just around the corner</h3>
+          </a>
+          <div class="news-source">Digital Trends</div>
+          <div class="news-date">July 17, 2023</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.lifitn.com/blog/gagp293quantum">
+            <h3>Tony Lawrence, CEO of LightRider Inc Gives Updates on His Quantum LiFi Now called Quantum Light</h3>
+          </a>
+          <div class="news-source">LiFi Tech News</div>
+          <div class="news-date">January 3, 2023</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://getagriponlighting.com/episode-293-the-quantum-demon-tony-lawrence-light-rider">
+            <h3>The Quantum Demon</h3>
+          </a>
+          <div class="news-source">Get a Grip on Lighting</div>
+          <div class="news-date">December 27, 2022</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.lifitn.com/blog/quantumlifi">
+            <h3>Revisiting a Get A Grip Lighting Podcast on Quantum LiFi Technology With Special Guest Anthony Lawrence, CEO of Light Rider Inc</h3>
+          </a>
+          <div class="news-source">LiFi Tech News</div>
+          <div class="news-date">October 25, 2022</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.ecmag.com/magazine/articles/article-detail/your-business-riding-waves-light-li-fi-transforming-light-and-data">
+            <h3>Riding the Waves of Light: Li-Fi is transforming light and data</h3>
+          </a>
+          <div class="news-source">EC Mag</div>
+          <div class="news-date">October 15, 2021</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://getagriponlighting.com/episode-192-becoming-pseudo-gods-anthony-lawrence-light-rider">
+            <h3>In a guest appearance on the Get A Grip On Lighting podcast, Tony Lawrence speaks on what it means to be a cyber warrior, how light can be used to secure communications, why the government needs to take the quantum threat seriously, and theories behind quantum computing and entanglement.</h3>
+          </a>
+          <div class="news-source">Get a Grip on Lighting</div>
+          <div class="news-date">June 9, 2021</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://patch.com/virginia/tysonscorner/south-lakes-seahawk-cyber-club-learns-li-fi-technology-local-firm">
+            <h3>Light Rider CEO Tony Lawrence talks LiFi and quantum future with award-winning South Lakes High student Cyber club.</h3>
+          </a>
+          <div class="news-source">Patch</div>
+          <div class="news-date">February 1, 2021</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.zdnet.com/video/meet-the-first-us-cyber-warrior/?ftag=COS-05-10aaa0h">
+            <h3>Light Rider CEO Tony Lawrence talks with ZDnet's Tonya Hall on the history & future of cyber as well as his own backstory serving as the US Army's 1st cyber warrior.</h3>
+          </a>
+          <div class="news-source">ZDNet</div>
+          <div class="news-date">December 16, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.cnn.com/2020/12/14/politics/us-agencies-hack-solar-wind-russia/index.html">
+            <h3>Light Rider's CEO Tony Lawrence shares his thoughts with CNN on the recent hacks across U.S. government agencies.</h3>
+          </a>
+          <div class="news-source">CNN</div>
+          <div class="news-date">December 14, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.insidequantumtechnology.com/news/tony-lawrence-founder-and-ceo-of-light-rider-and-vor-technology-has-agreed-to-speak-on-emerging-technologies-and-companies-in-quantum-computing-oct-27-at-iqt-europe/">
+            <h3>Tony Lawrence, Founder And CEO Of Light Rider, To Speak On "Emerging Technologies And Companies In Quantum Computing" at QT Europe</h3>
+          </a>
+          <div class="news-source">Inside Quantum Technology</div>
+          <div class="news-date">October 14, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.insidequantumtechnology.com/news-archive/tony-lawrence-founder-and-ceo-of-light-rider-and-vor-technology-has-agreed-to-speak-on-emerging-technologies-and-companies-in-quantum-computing-oct-27-at-iqt-europe/">
+            <h3>Tony Lawrence to Speak on Emerging Technologies in Quantum Computing</h3>
+          </a>
+          <div class="news-source">Inside Quantum Technology</div>
+          <div class="news-date">October 14, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.lifitn.com/blog/2020/10/8/light-rider-announces-quantum-li-fi-technology-products">
+            <h3>Light Rider announces Quantum Li-Fi Technology Products</h3>
+          </a>
+          <div class="news-source">LiFi Tech News</div>
+          <div class="news-date">October 8, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://news.yahoo.com/light-rider-unveils-quantum-lifi-120000821.html">
+            <h3>Light Rider Unveils Quantum LiFi Technology to Create Next-Generation Network Security</h3>
+          </a>
+          <div class="news-source">Yahoo News</div>
+          <div class="news-date">October 6, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.businesswire.com/news/home/20201006005277/en/Light-Rider-Unveils-Quantum-LiFi-Technology-to-Create-Next-Generation-Network-Security">
+            <h3>Light Rider Unveils Quantum LiFi Technology to Create Next-Generation Network Security</h3>
+          </a>
+          <div class="news-source">Business Wire</div>
+          <div class="news-date">October 6, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.ledsmagazine.com/smart-lighting-iot/article/14184773/quantum-computing-meets-lifi">
+            <h3>Quantum Computing Meets LiFi</h3>
+          </a>
+          <div class="news-source">LEDs Magazine</div>
+          <div class="news-date">October 6, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://quantumcomputingreport.com/light-rider-introduces-a-secure-network-technology-that-combines-li-fi-with-qrng-and-pqc/">
+            <h3>Light Rider Introduces a Secure Network Technology that Combines Li-Fi with QRNG and PQC</h3>
+          </a>
+          <div class="news-source">Quantum Computing Report</div>
+          <div class="news-date">October 6, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.smart2zero.com/news/quantum-encryption-lifi-products-offer-next-gen-network-security">
+            <h3>Quantum Encryption LiFi Products Offer Next-gen Network Security</h3>
+          </a>
+          <div class="news-source">Smart2Zero</div>
+          <div class="news-date">October 6, 2020</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.bloomberg.com/news/articles/2019-01-14/the-super-secure-quantum-cable-hiding-in-the-holland-tunnel">
+            <h3>The Super-Secure Quantum Cable Hiding in the Holland Tunnel</h3>
+          </a>
+          <div class="news-source">Bloomberg</div>
+          <div class="news-date">January 14, 2019</div>
+        </div>
+      </div>
+
+      <div class="news-block">
+        <div class="news-content">
+          <a href="https://www.bloomberg.com/news/articles/2018-10-09/new-evidence-of-hacked-supermicro-hardware-found-in-u-s-telecom">
+            <h3>New Evidence of Hacked Supermicro Hardware Found in U.S. Telecom</h3>
+          </a>
+          <div class="news-source">Bloomberg</div>
+          <div class="news-date">October 9, 2018</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image">
+    &copy; 2025 Light Rider Inc. All rights reserved.
+  </footer>
+</body>
+</html>

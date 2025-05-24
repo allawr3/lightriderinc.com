@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Frequently Asked Questions about Light Rider's quantum technology products." />
+  <title>FAQ | Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFFF00;
+      --red: #fc2848;
+      --maroon: #a52848;
+      --black: #000;
+      --dark-gray: #111;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--black);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .binary-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><text x="0" y="15" fill="rgba(255,255,255,0.1)" font-size="15px">0101010101...</text></svg>');
+      opacity: 0.4;
+    }
+    header {
+      z-index: 2;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--black);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left a img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--yellow);
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    main {
+      z-index: 2;
+      flex: 1;
+      padding: 3rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--red);
+      margin-bottom: 3rem;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .contact-info {
+      background-color: var(--dark-gray);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-top: 4px solid var(--yellow);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .contact-info p {
+      color: #ccc;
+      margin: 0;
+    }
+    .contact-info a {
+      color: var(--yellow);
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    .faq-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .faq-item {
+      background-color: var(--dark-gray);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .faq-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .faq-question {
+      padding: 1.5rem;
+      cursor: pointer;
+      border-top: 3px solid var(--yellow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    .faq-question:hover {
+      background-color: #1a1a1a;
+    }
+    .faq-question h3 {
+      margin: 0;
+      color: white;
+      font-size: 1.1rem;
+    }
+    .faq-toggle {
+      color: var(--yellow);
+      font-size: 1.5rem;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+    .faq-answer {
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-answer.active {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      max-height: 1000px;
+    }
+    .faq-answer p, .faq-answer li {
+      color: #ccc;
+      line-height: 1.6;
+    }
+    .faq-answer ul, .faq-answer ol {
+      padding-left: 1.5rem;
+    }
+    .faq-answer strong {
+      color: white;
+    }
+    .faq-item.active .faq-toggle {
+      transform: rotate(45deg);
+    }
+    .faq-item:nth-child(odd) .faq-question {
+      border-top-color: var(--yellow);
+    }
+    .faq-item:nth-child(even) .faq-question {
+      border-top-color: var(--red);
+    }
+    .faq-item:nth-child(3n) .faq-question {
+      border-top-color: var(--maroon);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      color: #eee;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 0.8rem;
+      text-align: left;
+    }
+    th {
+      background-color: #222;
+      color: var(--yellow);
+    }
+    tr:nth-child(even) {
+      background-color: #191919;
+    }
+    footer {
+      z-index: 2;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      background-color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-image {
+      max-height: 40px;
+      opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      h1 { font-size: 2rem; }
+      .faq-question {
+        padding: 1rem;
+      }
+      .faq-answer.active {
+        padding: 0 1rem 1rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-bg"></div>
+  <header>
+    <div class="header-left">
+      <a href="index.html">
+        <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Frequently Asked Questions</h1>
+    <p class="subtitle">QUANTUM ANSWERS • EXPERT INSIGHTS • CLEAR EXPLANATIONS</p>
+
+    <div class="contact-info">
+      <p>Don't see your question here? Send us a note at <a href="mailto:support@lightriderinc.com">support@lightriderinc.com</a>.</p>
+    </div>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What are the products available now?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Products available for purchase today are Light Rider's Gen 1 and Gen 1 Quantum bulbs. Enterprise software solutions are custom tailored through Light Rider's IP Program with applications currently open through the intake process here on our website.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How is Light Rider's encryption technology different than current encryption technologies?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider's encryption is different from classical encryption entirely. Classical encryption relies on software-derived repetition of numbers, quantum encryption derives its randomness from the physical behavior of photons. Our quantum terminals are independent Entropy sources that do not need to be connected to the internet. It's all-natural!</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What's the capacity related to encryption at the enterprise level?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider's quantum processing capabilities allow for massive scalability. In only half a second a 1k block can be created from the totally random quantum super stream which is integrated from 6 different sources of quantum entropy. Each terminal can stream quantum keys infinitely.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Does it encrypt your Internet connection? Or just files or both?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider's quantum encryption secures any files or computer systems but is not intended to encrypt an Internet connection to a remote host. LiFi + Light Rider however creates a closed, secure, and invisible wireless connection when used for connectivity.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is Li-Fi?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Fidelity or Li-Fi is a wireless communication technology which utilizes light to transmit data between devices.</p>
+          <p>In technical terms, Li-Fi is a light communication system that can transmit data at very high speeds over the visible light, ultraviolet, and infrared spectrums. Li-Fi is the wireless version of fiber optic communications.</p>
+          <p>In terms of its end use, the technology is similar to Wi-Fi — the key technical difference being that Wi-Fi uses radio frequency to induce a voltage in an antenna to transmit data, whereas Li-Fi uses the modulation of light intensity to transmit data. Li-Fi's ability to safely function in areas otherwise susceptible to electromagnetic interference (e.g. aircraft cabins, hospitals, military) is an advantage.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How does Li-Fi work?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Li-Fi works by switching the power current to the light bulb "Off (0)" and "On (1)" at a very high speed, too quick to be noticed by the human eye, thus, it does not present any flickering. Although Li-Fi bulbs would have to be kept on while transmitting data, they are dimmed below human visibility while still emitting enough light to carry data.</p>
+          <p>The technology allows roaming between various Li-Fi bulbs, also known as "Handover," allowing seamless transition between bulb to bulb. The light waves cannot penetrate walls which translates to a much shorter range, and a lower hacking potential, relative to Wi-Fi. Direct line of sight is not necessary for Li-Fi to transmit a signal; the light is reflected off walls.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What's QRNG?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Random Number Generators (RNG) can be hardware or software that produce sequences of random numbers. There are three distinct types of random number generators (RNG): Pseudo-RNGs, True RNGs, and Quantum RNGs. Random numbers are essential for several applications:</p>
+          <ul>
+            <li>Encrypted data transmission</li>
+            <li>Quantum Key Distribution (QKD)</li>
+            <li>Medical clinical trials</li>
+            <li>Generating secure passwords</li>
+            <li>Gambling machines</li>
+            <li>Simulating virus outbreak behaviors, such as, COVID-19</li>
+            <li>Perform simulations to predict the weather</li>
+          </ul>
+          <p>Light Rider uses "Quantum Shot Noise" to create true quantum randomness. Unlike pseudo-random number generators that create patterns that can be exploited by hackers, quantum random number generators produce truly unpredictable sequences with no geometric patterns or repetition.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is Quantum Li-Fi?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>By using a process similar to Morse Code, "Quantum Li-Fi" transmits three or more bits. Comprised of the two standard bits plus quantum bits which are represented by sequences of flickering of the light to represent quantum information in both encryption and computing.</p>
+          <p>This information cannot be identified or realized by conventional (non-quantum) software or computing systems because there is no repetition in the code. Since quantum bit encryption is combined with standard data during all transmissions; the communications method is inherently secure.</p>
+          <p>Standard Li-Fi systems can only send "2" bits representing single binary values of either 0 or 1; Quantum Li-Fi can transmit substantially larger amounts of secure data by utilizing "3" or more bits.</p>
+          <table>
+            <tr>
+              <th>Bit #</th>
+              <th>Light Flicker Status</th>
+              <th>Binary Data</th>
+              <th>Data Source</th>
+              <th>Channel</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Lights OFF</td>
+              <td>0</td>
+              <td>TX</td>
+              <td>Li-Fi</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Lights ON</td>
+              <td>1</td>
+              <td>TX</td>
+              <td>Li-Fi</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Lights ON, Then OFF</td>
+              <td>"0,1"</td>
+              <td>Quantum Random Number Generator</td>
+              <td>Quantum</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Lights OFF, Then ON</td>
+              <td>"1,0"</td>
+              <td>Quantum Random Number Generator</td>
+              <td>Quantum</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Does it have updates or software installed?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider's encryption products provide you a sandbox environment to apply true quantum randomness wherever you desire in your own infrastructure. Light Rider's team works with every enterprise user to correctly configure, deploy, and maintain the quantum environment in a client's own network stack.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How come I've never heard of LiFi?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>If you're in the United States then chances are that LiFi is completely new to you. However, LiFi as a technology has been around for years with many quality LiFi technology manufacturers around the world. For a variety of reasons, LiFi has yet to reach the US consumer market even though it will most likely be the new wireless global standard in coming years.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Is there an app?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>For control of Light Rider encryption solutions there is an app that runs at the local level to manage devices and encryption settings. Light Rider has also created a Quantum Arcade app that utilizes a quantum generation super stream to give users the ability to leverage quantum randomness in games of chance. This is perfect for users desiring heads/tails or lottery number generation or who desire to intend an outcome using the supernatural behavior of quantum physics. The Quantum Arcade app is currently available in the iOS and Android app stores.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Is any data stored on Light Rider servers?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Since information from your network is never broadcast back to Light Rider's servers there is never any of your data stored.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>If the encryption stream comes via software, how quantum can it really be?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider's quantum encryption doesn't come from software, it is only transmitted by software. Where typical encryption schemes are generated in binary using software, Light Rider's quantum randomness is generated at the physical level (light) and then transmitted through software.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Can't I just make my own encryption stream using a quantum chip?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Access to a quantum processor alone will not translate into an application. Light Rider has spent a significant amount of time developing proprietary code and through research has leveraged quantum technologies.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What else is Light Rider working on?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Light Rider has 4 product lines:</p>
+          <ul>
+            <li><strong>Portable Encryption:</strong> Leveraging quantum physics to encrypt and unlock information and communications/computing systems on demand.</li>
+            <li><strong>Quantum Storage:</strong> Storage devices that utilize quantum encryption for an ultra-secure storage environment.</li>
+            <li><strong>Quantum Networking:</strong> Communications technologies (LiFI, routers, etc) that create a quantum secure communications system to replace traditional WiFi.</li>
+            <li><strong>Quantum Infrastructure:</strong> Applications of quantum communications, encryption, and security at the municipal, campus, or critical infrastructure layers.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is entropy in computing?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Entropy measures the randomness or unpredictability in a system. In computing, it's crucial for generating secure cryptographic keys and ensuring unpredictable random number sequences.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How is quantum entropy different from classical entropy?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Quantum entropy is derived from the behavior of quantum systems, such as photon fluctuations, and is inherently unpredictable — unlike classical systems which can be modeled and predicted over time.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is the NIST Entropy Certification?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>The NIST Entropy Source Validation process evaluates whether a randomness source meets the rigorous standards for cryptographic use. Light Rider aims for compliance with these standards for its QRNG devices.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What's the difference between PRNG and TRNG?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>A Pseudo-Random Number Generator (PRNG) uses algorithms to simulate randomness and can be predicted if the initial state is known. A True Random Number Generator (TRNG), often hardware-based, derives its randomness from physical phenomena, making it unpredictable.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is the Quantum Terminal and how does it work?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>The Quantum Terminal is a compact, plug-and-play device that streams certified quantum entropy using quantum light processes. It connects via Wi-Fi or USB and integrates into applications for encryption, randomness, or AI training.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Can the Quantum Terminal be used for Bitcoin mining?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Yes. By replacing predictable nonce generation with quantum entropy, the Quantum Terminal can help reduce hash collision risks and improve mining uniqueness, especially in mining pools prone to nonce duplication.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How does entropy improve Bitcoin mining?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Entropy enhances security and mining efficiency by ensuring each hash attempt is unique. This reduces duplicated work and increases the probability of finding a valid block hash without conflict in mining pools.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Why is quantum entropy important for cybersecurity?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Quantum entropy ensures truly random encryption keys and eliminates predictable patterns. This provides stronger defenses against cryptanalysis and emerging quantum attacks.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Is the Quantum Terminal compatible with standard operating systems?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Yes. The Quantum Terminal is OS-agnostic and works with Windows, macOS, Linux, and embedded systems via standard USB or Wi-Fi interfaces.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>Does the Quantum Terminal require an internet connection?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>No. It generates quantum entropy locally and does not need an internet connection to function. However, online applications may require network access to receive the entropy stream.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What is the lifespan of a Quantum Terminal device?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Each Quantum Terminal is designed for continuous operation and tested for reliability. Under normal conditions, the device can run 24/7 for years without performance degradation.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How does quantum entropy enhance AI training?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Quantum entropy adds unpredictable data inputs during training, helping prevent overfitting and bias in models. It boosts generalization performance and can enhance randomness in synthetic data generation.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>How does Light Rider ensure the security of the entropy stream?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>All entropy generated is hardware-sourced and delivered over authenticated channels. The data never leaves your system unless explicitly streamed to approved applications.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <h3>What industries benefit most from quantum entropy?</h3>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">
+          <p>Industries like cybersecurity, defense, financial services, healthcare, and artificial intelligence benefit from secure, unpredictable entropy sources for encryption, identity, and stochastic modeling.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image">
+    &copy; 2025 Light Rider Inc. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleFaq(element) {
+      const faqItem = element.parentElement;
+      const answer = faqItem.querySelector('.faq-answer');
+      const isActive = faqItem.classList.contains('active');
+
+      // Close all FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+        item.querySelector('.faq-answer').classList.remove('active');
+      });
+
+      // If this item wasn't active, open it
+      if (!isActive) {
+        faqItem.classList.add('active');
+        answer.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

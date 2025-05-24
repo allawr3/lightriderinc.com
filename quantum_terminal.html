@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Learn all about the Quantum Terminal - Light Rider's quantum entropy generator." />
+  <title>Quantum Terminal | Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFFF00;
+      --red: #fc2848;
+      --maroon: #a52848;
+      --black: #000;
+      --dark-gray: #111;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--black);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .binary-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><text x="0" y="15" fill="rgba(255,255,255,0.1)" font-size="15px">0101010101...</text></svg>');
+      opacity: 0.4;
+    }
+    header {
+      z-index: 2;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--black);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left a img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--yellow);
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    main {
+      z-index: 2;
+      flex: 1;
+      padding: 3rem 1rem;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: white;
+      font-weight: 700;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--red);
+      margin-bottom: 3rem;
+      letter-spacing: 2px;
+    }
+    .cta-button {
+      display: inline-block;
+      margin: 2rem auto;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(to right, var(--yellow), var(--red));
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+    .button-container {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .gallery-item {
+      background-color: var(--dark-gray);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      background-color: #2a2a2a;
+      aspect-ratio: 1 / 1;
+    }
+    .gallery-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-content h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    .gallery-content p {
+      margin-bottom: 0;
+      font-size: 0.9rem;
+      color: #ccc;
+      flex-grow: 1;
+    }
+    .info-section {
+      background-color: var(--dark-gray);
+      padding: 2.5rem;
+      border-radius: 12px;
+      margin: 4rem 0;
+      text-align: left;
+      border-top: 4px solid var(--yellow);
+    }
+    .info-section h2 {
+      color: white;
+      margin-top: 0;
+    }
+    .info-section p, .info-section li {
+      color: #ccc;
+      line-height: 1.6;
+    }
+    footer {
+      z-index: 2;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      background-color: var(--black);
+    }
+    @media (max-width: 900px) {
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-bg"></div>
+  <header>
+    <div class="header-left">
+      <a href="index.html">
+        <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Quantum Terminal</h1>
+    <p class="subtitle">TRUE ENTROPY • SECURE RANDOMNESS • QUANTUM POWER</p>
+
+    <div class="button-container">
+      <a href="https://quantumlifi.com/connect-to-light.html" class="cta-button">Connect</a>
+    </div>
+
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/JhL5dy2G/20250519-1055-Glowing-Black-Box-simple-compose-01jvmgmvn0f7fb0nchsabjt7qg.png" alt="Wall-mounted Quantum Terminal with glowing indicator">
+        <div class="gallery-content">
+          <h3>Wall-Mount Installation</h3>
+          <p>The Quantum Terminal can be easily plugged into any standard outlet, providing continuous access to quantum entropy.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/4xb9yWWx/20250518-2009-Colorful-USB-Device-Connection-simple-compose-01jvjxz4sken5vh2adk5pfvcyb.png" alt="Quantum Terminal connected to laptop">
+        <div class="gallery-content">
+          <h3>Laptop Connection</h3>
+          <p>Connect directly to your laptop for on-the-go access to quantum randomness for development and testing.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/1zmNqDdc/Chat-GPT-Image-May-18-2025-08-15-01-PM.png" alt="Portable Quantum Terminal">
+        <div class="gallery-content">
+          <h3>Portable Design</h3>
+          <p>Compact form factor allows you to carry quantum capabilities with you wherever you go.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/vDw4Hn9n/20250519-1159-Hand-Holding-Device-simple-compose-01jvmm7qjkepctp7x2zvjrjnp2-1.png" alt="Hand holding Quantum Terminal">
+        <div class="gallery-content">
+          <h3>Ergonomic Design</h3>
+          <p>Comfortable to hold and easy to carry, with status indicators clearly visible at a glance.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/FF8nmVW6/20250519-1130-Sleek-Wi-Fi-Extender-Design-simple-compose-01jvmjngzpf809bazdj3r525h4.png" alt="Quantum Terminal in outlet">
+        <div class="gallery-content">
+          <h3>Wireless Connectivity</h3>
+          <p>Built-in wireless capabilities allow multiple devices to access quantum entropy simultaneously.</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.postimg.cc/SRCLmCj0/20250430-1522-i-Phone-Screen-Steps-remix-01jt42arjpfrv98yyb1pv5vc9f.png" alt="Mobile app interface">
+        <div class="gallery-content">
+          <h3>Mobile Integration</h3>
+          <p>Control and monitor your Quantum Terminal through our intuitive mobile application.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>What is the Quantum Terminal?</h2>
+      <p>The Quantum Terminal is a revolutionary device that harnesses the fundamental unpredictability of quantum physics to generate true random numbers. Unlike conventional pseudorandom number generators that use mathematical algorithms, the Quantum Terminal leverages quantum mechanics to produce entropy that is genuinely unpredictable and impossible to replicate.</p>
+      
+      <h2>How Do You Use It?</h2>
+      <ul>
+        <li>Step 1: Plug it into a wall outlet or connect via USB to your computer.</li>
+        <li>Step 2: Connect to it via Wi-Fi or direct connection.</li>
+        <li>Step 3: Access the entropy through our API or user-friendly dashboard.</li>
+        <li>Step 4: Integrate quantum randomness into your applications, security protocols, or research.</li>
+      </ul>
+      
+      <h2>Applications</h2>
+      <ul>
+        <li><strong>Cybersecurity:</strong> Generate cryptographic keys that are fundamentally unbreakable.</li>
+        <li><strong>AI & Machine Learning:</strong> Create truly random initial states and training data for more robust models.</li>
+        <li><strong>Scientific Research:</strong> Access quantum randomness for experiments requiring statistical purity.</li>
+        <li><strong>Financial Modeling:</strong> Improve Monte Carlo simulations with genuine randomness.</li>
+        <li><strong>Gaming & Lotteries:</strong> Ensure fair and unpredictable outcomes in games of chance.</li>
+      </ul>
+    </div>
+  </main>
+
+<footer>
+  <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image" style="max-height: 40px; margin-bottom: 0.5rem;">
+  <div style="color: #aaa;">&copy; 2025 Light Rider Inc. All rights reserved.</div>
+</footer>
+</body>
+</html>

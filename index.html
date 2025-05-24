@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Light Rider Inc. - Quantum technology solutions for secure, scalable applications." />
+  <title>Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFFF00;
+      --red: #fc2848;
+      --maroon: #a52848;
+      --black: #000;
+      --dark-gray: #111;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--black);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .binary-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><text x="0" y="15" fill="rgba(255,255,255,0.1)" font-size="15px">0101010101...</text></svg>');
+      opacity: 0.4;
+    }
+    header {
+      z-index: 2;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--black);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--yellow);
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    .logo-container {
+      z-index: 2;
+      position: relative;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .logo-container img {
+      max-height: 120px;
+      /* Removed the drop-shadow filter that was creating the glow effect */
+    }
+    .loading-bar {
+      z-index: 2;
+      /* Increased width by 15% from 14% to 16.1% */
+      width: 16.1%;
+      height: 8px;
+      margin: 1rem auto 0 auto;
+      background: linear-gradient(to right, var(--yellow), var(--red), var(--maroon));
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .loading-bar:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+      animation: loading 2s infinite;
+    }
+    @keyframes loading {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    main {
+      z-index: 2;
+      flex: 1;
+      padding: 3rem 1rem;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: white;
+      font-weight: 700;
+    }
+    p.tagline {
+      font-size: 1.2rem;
+      color: var(--red);
+      margin-bottom: 3rem;
+      letter-spacing: 2px;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .feature {
+      background-color: var(--dark-gray);
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 280px;
+      flex: 1 1 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+      text-decoration: none;
+      color: white;
+    }
+    .feature:nth-child(1) { border-top: 4px solid var(--yellow); }
+    .feature:nth-child(2) { border-top: 4px solid var(--red); }
+    .feature:nth-child(3) { border-top: 4px solid var(--maroon); }
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .feature h2 { margin-top: 0; }
+    .cta-button {
+      display: inline-block;
+      margin-top: 3rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(to right, var(--yellow), var(--red));
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+    footer {
+      z-index: 2;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      background-color: var(--black);
+      /* Removed the border-top that was creating the red line */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-image {
+      max-width: 150px;
+      margin: 1rem 0;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      /* Updated the mobile loading bar width from 5.6% to 6.44% (15% increase) */
+      .loading-bar { width: 6.44%; }
+      h1 { font-size: 2rem; }
+      .footer-image {
+        max-width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-bg"></div>
+  <header>
+    <div class="header-left">
+      <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+    </div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+
+  <section id="home">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/pLMrNKcj/White.png" alt="Light Rider Logo">
+    </div>
+    <div class="loading-bar"></div>
+  </section>
+
+  <main>
+    <h1>Born from Entropy, Built for Eternity</h1>
+    <p class="tagline">SECURE • SCALABLE • QUANTUM</p>
+
+    <div class="features">
+      <a href="https://quantumlifi.com/entropy-to-text.html" class="feature">
+        <h2>Synthetic Data</h2>
+        <p>Generate quantum-secure datasets through our patented entropy frameworks, ensuring unbreakable cryptography.</p>
+      </a>
+      <a href="https://axiquantum.com/" class="feature">
+        <h2>Quantum AI</h2>
+        <p>Leverage quantum properties to develop AI models that explore solution spaces impossible for classical systems.</p>
+      </a>
+      <a href="quantum-crypto.html" class="feature">
+        <h2>Cryto-Mining</h2>
+        <p>Quantum Entropy improves Bitcoin mining by injecting true quantum randomness into critical parts of the mining process.</p>
+      </a>
+    </div>
+
+    <div style="margin-top: 3rem; display: flex; justify-content: center;">
+      <iframe width="1000" height="562"
+        src="https://www.youtube.com/embed/I3EObQ6ym-g?start=6"
+        title="Light Rider Promo Video"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <section id="synthetic-data"></section>
+    <section id="quantum-ai"></section>
+    <section id="quantum-applications"></section>
+  </main>
+
+  <footer>
+    <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image">
+    &copy; 2025 Light Rider Inc. All rights reserved.
+  </footer>
+</body>
+</html>

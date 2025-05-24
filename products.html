@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore Light Rider's hardware: Quantum Terminal and Quantum LiFi." />
+  <title>Products | Light Rider Inc.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #000;
+      color: white;
+    }
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left a img {
+      max-height: 50px;
+      margin-right: 1rem;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #FFFF00;
+      transition: width 0.3s ease;
+    }
+    nav a:hover:after {
+      width: 100%;
+    }
+    main {
+      padding: 4rem 1rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .product-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    .product {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    /* Added colored borders to match index.html styling */
+    .product:nth-child(1) { border-top: 4px solid #FFFF00; }
+    .product:nth-child(2) { border-top: 4px solid #fc2848; }
+    .product:nth-child(3) { border-top: 4px solid #a52848; }
+    .product img {
+      max-width: 300px;
+      border-radius: 8px;
+    }
+    /* Added a new image container class to help with consistent sizing */
+    .img-container {
+      width: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-container img {
+      max-width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+    }
+    .product-info {
+      flex: 1;
+    }
+    .product-info h2 {
+      margin: 0.5rem 0;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: #000;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="index.html">
+        <img src="https://i.postimg.cc/6pkcX42r/ICON-Knockout-Black-Circle-Gradient-Outline.png" alt="Light Rider Icon">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="https://quantumlifi.com/quantumlifi-apps.html">Applications</a>
+      <a href="faq.html">FAQ</a>
+      <a href="news.html">News</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Explore Our Products</h1>
+    <div class="product-grid">
+      <a href="quantum_terminal.html" class="product">
+        <div class="img-container">
+          <img src="https://i.postimg.cc/vDw4Hn9n/20250519-1159-Hand-Holding-Device-simple-compose-01jvmm7qjkepctp7x2zvjrjnp2-1.png" alt="Quantum Terminal">
+        </div>
+        <div class="product-info">
+          <h2>Quantum Terminal</h2>
+          <p>Our plug-and-play entropy generator that powers next-gen quantum security and AI synthesis. Designed for scalability and ease of use.</p>
+        </div>
+      </a>
+      <a href="quantum-lifi.html" class="product">
+        <div class="img-container">
+          <img src="https://i.postimg.cc/HkN1qBsn/Packaging.png" alt="Quantum LiFi">
+        </div>
+        <div class="product-info">
+          <h2>Quantum LiFi</h2>
+          <p>Secure and ultra-fast optical communication using modulated quantum light. Perfect for mission-critical data transfer.</p>
+        </div>
+      </a>
+      <a href="https://quantumlifi.com/home.html" class="product">
+        <div class="img-container">
+          <img src="https://i.postimg.cc/vBRkh7Jk/software.png" alt="Software">
+        </div>
+        <div class="product-info">
+          <h2>Software</h2>
+          <p>Our suite of quantum-enhanced software solutions enables businesses to harness true entropy for security, AI, and scientific applications with seamless integration into existing systems.</p>
+        </div>
+      </a>
+    </div>
+    
+    <section id="quantum-terminal"></section>
+    <section id="quantum-lifi"></section>
+    <section id="software"></section>
+  </main>
+ 
+<footer>
+  <img src="https://i.postimg.cc/HLMSc9Dv/ICON-GRADIENT2.png" alt="Light Rider Icon" class="footer-image" style="max-height: 40px; margin-bottom: 0.5rem;">
+  <div style="color: #aaa;">&copy; 2025 Light Rider Inc. All rights reserved.</div>
+</footer>
+</body>
+</html>
